@@ -261,8 +261,8 @@
                       <Table columnCount="4" rowCount="4">
                         <Column editable="false" title="Id" type="java.lang.String"/>
                         <Column editable="false" title="Nombre" type="java.lang.String"/>
-                        <Column editable="true" title="Fecha Alta" type="java.lang.String"/>
-                        <Column editable="true" title="Observacinoes" type="java.lang.String"/>
+                        <Column editable="false" title="Fecha Alta" type="java.lang.String"/>
+                        <Column editable="false" title="Observacinoes" type="java.lang.String"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -290,7 +290,7 @@
                       </TableColumnModel>
                     </Property>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                      <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
                   </Properties>
                 </Component>

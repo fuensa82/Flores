@@ -7,6 +7,7 @@ package flores.app;
 import flores.Beans.ComposicionBean;
 import flores.Beans.FlorBean;
 import flores.gestores.GestionComposicionesBD;
+import flores.gestores.GestionFloresBD;
 import flores.utils.Utils;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -29,15 +30,19 @@ public class FloresMain extends javax.swing.JFrame {
      */
     public FloresMain() {
         initComponents();
-
-        Utils.ocultaFilaN(jTableFamilias, 2);
-        DefaultTableModel datosTabla = (DefaultTableModel) jTableFamilias.getModel();
-        datosTabla.addRow(new Object[]{
-            "Rosa tallo",
-            "80",
-            "1"
-        });
-        System.out.println(jTableFamilias.getValueAt(0, 2));
+        ponerListenerTablaComposiciones();
+        ponerListenerTablaNuevaComposicion();
+        ponerListenerTablaFlorAlmacen();
+        
+        
+//        Utils.ocultaFilaN(jTableFamilias, 2);
+//        DefaultTableModel datosTabla = (DefaultTableModel) jTableFamilias.getModel();
+//        datosTabla.addRow(new Object[]{
+//            "Rosa tallo",
+//            "80",
+//            "1"
+//        });
+//        System.out.println(jTableFamilias.getValueAt(0, 2));
     }
 
     /**
@@ -174,7 +179,7 @@ public class FloresMain extends javax.swing.JFrame {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -185,6 +190,7 @@ public class FloresMain extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTableComposiones.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(jTableComposiones);
         if (jTableComposiones.getColumnModel().getColumnCount() > 0) {
             jTableComposiones.getColumnModel().getColumn(0).setMinWidth(20);
@@ -330,7 +336,8 @@ public class FloresMain extends javax.swing.JFrame {
     private void jPanel2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel2ComponentShown
         //Pestaña ramos
         cargarTablaComposiciones();
-        ponerListenerTablaComposiciones();
+        cargarTablaAlmacen();
+        
     }//GEN-LAST:event_jPanel2ComponentShown
 
     /**
@@ -404,10 +411,25 @@ public class FloresMain extends javax.swing.JFrame {
             });
         }
     }
+    
+    private void cargarTablaAlmacen() {
+        ArrayList<FlorBean> lista = GestionFloresBD.getListaFloresAlmacen();
+        DefaultTableModel datosTabla = (DefaultTableModel) jTableFlorAlmacen.getModel();
+        for (int i = datosTabla.getRowCount(); i > 0; i--) {
+            datosTabla.removeRow(i - 1);
+        }
+        for (FlorBean flor : lista) {
+            datosTabla.addRow(new Object[]{
+                flor.getIdFlor(),
+                flor.getNombreFamilia(),
+                flor.getNombre(),
+                flor.getColor(),
+                flor.getCantidadAlmacen()
+            });
+        }
+    }
 
     private void ponerListenerTablaComposiciones() {
-        JFrame padre = this;
-
         jTableComposiones.addMouseListener(new MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -427,7 +449,58 @@ public class FloresMain extends javax.swing.JFrame {
                             flor.getCantMinima()
                         });
                     }
+                }
+            }
+        });
+    }
 
+    private void ponerListenerTablaNuevaComposicion() {
+        jTableComposicionNueva.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    System.out.println("Se ha hecho doble click - quitamos una flor");
+                    String idFlor = (String) jTableComposicionNueva.getValueAt(jTableComposicionNueva.getSelectedRow(), 0);
+                    int cantidad = (Integer) jTableComposicionNueva.getValueAt(jTableComposicionNueva.getSelectedRow(), 4);
+                    //cantidad--;
+                    jTableComposicionNueva.setValueAt(--cantidad, jTableComposicionNueva.getSelectedRow(), 4);
+
+                }
+            }
+        });
+    }
+
+    private void ponerListenerTablaFlorAlmacen() {
+        jTableFlorAlmacen.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    
+                    String idFlor = (String) jTableFlorAlmacen.getValueAt(jTableFlorAlmacen.getSelectedRow(), 0);
+                    System.out.println("Se ha hecho doble click - añadimos una flor: "+idFlor);
+                    boolean existe=false;
+                    for (int i=0;i< jTableComposicionNueva.getRowCount();i++){
+                        String idTabla=(String) jTableComposicionNueva.getValueAt(i, 0);
+                        if(idFlor.equals(idTabla)){
+                            System.out.println("Sumando 1 flor. Fila "+i);
+                            System.out.println(jTableComposicionNueva.getValueAt(i, 4));
+                            existe=true;
+                            int cantidad = (Integer)jTableComposicionNueva.getValueAt(i, 4);
+                            jTableComposicionNueva.setValueAt(++cantidad, i, 4);
+                        }
+                    }
+                    if(!existe){
+                        System.out.println("Añadiendo flor");    
+                        String nFamilia = (String) jTableFlorAlmacen.getValueAt(jTableFlorAlmacen.getSelectedRow(), 1);
+                        String nombre = (String) jTableFlorAlmacen.getValueAt(jTableFlorAlmacen.getSelectedRow(), 2);
+                        String color = (String) jTableFlorAlmacen.getValueAt(jTableFlorAlmacen.getSelectedRow(), 3);
+                        ((DefaultTableModel)jTableComposicionNueva.getModel()).addRow(new Object[]{
+                            idFlor,
+                            nFamilia,
+                            nombre,
+                            color,
+                            1}
+                        );
+                    }
+                    
                 }
             }
         });

@@ -11,12 +11,20 @@ package flores.Beans;
 public class FlorBean {
     private String idFlor;
     private String idFamilia;
+    private String nombreFamilia;
     private String nombre;
     private int duracion;
     private String color;
     private int cantMinima;
     private int cantidadAlmacen;
     
+     public String getNombreFamilia() {
+        return nombreFamilia;
+    }
+
+    public void setNombreFamilia(String nombreFamilia) {
+        this.nombreFamilia = nombreFamilia;
+    }
 
     public String getIdFlor() {
         return idFlor;
