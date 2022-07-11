@@ -8,9 +8,12 @@ import flores.Beans.ComposicionBean;
 import flores.Beans.FlorBean;
 import flores.gestores.GestionComposicionesBD;
 import flores.gestores.GestionFloresBD;
+import flores.utils.FechasUtils;
+import flores.utils.Utils;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -65,13 +68,19 @@ public class FloresMain extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldNombreComposición = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1024, 768));
+
+        jPanel1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanel1ComponentShown(evt);
+            }
+        });
 
         jTableFlores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -233,10 +242,7 @@ public class FloresMain extends javax.swing.JFrame {
         jTableComposicionNueva.setAutoCreateRowSorter(true);
         jTableComposicionNueva.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Id", "Familia", "Nombre", "Color", "Cantidad"
@@ -284,6 +290,11 @@ public class FloresMain extends javax.swing.JFrame {
         });
 
         jButton2.setText("<html>Encargar<br><b>sin</b> cliente");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -301,7 +312,7 @@ public class FloresMain extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldNombreComposición, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -320,7 +331,7 @@ public class FloresMain extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldNombreComposición, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -376,6 +387,27 @@ public class FloresMain extends javax.swing.JFrame {
         //iniciarMisComponentes();
         frame.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jPanel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentShown
+        //Pestaña inicial
+        jTableFlores.getColumnModel().getColumn(0).setCellRenderer(jTableFlores.getTableHeader().getDefaultRenderer());
+    }//GEN-LAST:event_jPanel1ComponentShown
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //boton de encargo sin cliente
+        //String fecha=JOptionPane.showInputDialog(this, "Fecha de entrega",FechasUtils.fechaActualString());
+        JDialog frame = new JDialog(this, "fecha", true);
+        frame.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+        FechaEntrega ventanaF=new FechaEntrega();
+        frame.getContentPane().add(ventanaF);
+        frame.pack();
+        frame.setLocationRelativeTo(this);
+        frame.setVisible(true);
+        //iniciarMisComponentes();
+        frame.setVisible(false);
+        System.out.println("Fecha: "+ventanaF.getFechaSelString());
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -434,7 +466,7 @@ public class FloresMain extends javax.swing.JFrame {
     private javax.swing.JTable jTableFamilias;
     private javax.swing.JTable jTableFlorAlmacen;
     private javax.swing.JTable jTableFlores;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextFieldNombreComposición;
     // End of variables declaration//GEN-END:variables
 
     private void cargarTablaComposiciones() {
