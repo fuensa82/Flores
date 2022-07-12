@@ -19,19 +19,19 @@ USE `flores`;
 
 -- Volcando estructura para tabla flores.clientes
 CREATE TABLE IF NOT EXISTS `clientes` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `IdCliente` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(50) NOT NULL,
   `Apellidos` varchar(50) DEFAULT NULL,
   `Telefono` varchar(11) DEFAULT NULL,
   `email` varchar(60) DEFAULT NULL,
   `Telefono 2` varchar(11) DEFAULT NULL,
   `Direccion entrega` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`Id`)
+  PRIMARY KEY (`IdCliente`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla flores.clientes: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla flores.clientes: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` (`Id`, `Nombre`, `Apellidos`, `Telefono`, `email`, `Telefono 2`, `Direccion entrega`) VALUES
+INSERT INTO `clientes` (`IdCliente`, `Nombre`, `Apellidos`, `Telefono`, `email`, `Telefono 2`, `Direccion entrega`) VALUES
 	(1, 'Manuel', 'Lopez', '925778899', 'sin email', NULL, 'Calle Tolosa, 3 Santa Cruz'),
 	(2, 'Karl', 'Max', '925776431', 'sin', NULL, 'Calle Tui');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
@@ -51,6 +51,69 @@ INSERT INTO `composiciones` (`idComposicion`, `Nombre`, `FechaAlta`, `Observacio
 	(1, 'Fantasía ilusión', '2022-06-20', 'Ninguna'),
 	(2, 'Recuerdos coloridos', '2022-06-21', 'Con verde oliva');
 /*!40000 ALTER TABLE `composiciones` ENABLE KEYS */;
+
+-- Volcando estructura para tabla flores.encargoflor
+CREATE TABLE IF NOT EXISTS `encargoflor` (
+  `idEncargo` int(11) NOT NULL,
+  `idFlor` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`idEncargo`,`idFlor`),
+  KEY `FK__flores` (`idFlor`),
+  CONSTRAINT `FK__encargos` FOREIGN KEY (`idEncargo`) REFERENCES `encargos` (`idEncargo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK__flores` FOREIGN KEY (`idFlor`) REFERENCES `flores` (`idFlor`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Volcando datos para la tabla flores.encargoflor: ~4 rows (aproximadamente)
+/*!40000 ALTER TABLE `encargoflor` DISABLE KEYS */;
+INSERT INTO `encargoflor` (`idEncargo`, `idFlor`, `Cantidad`) VALUES
+	(5, 1, 2),
+	(5, 2, 1),
+	(5, 3, 4),
+	(5, 4, 7),
+	(6, 1, 7),
+	(6, 2, 4),
+	(6, 3, 3),
+	(6, 4, 6),
+	(8, 1, 1),
+	(8, 2, 1),
+	(8, 3, 1),
+	(8, 4, 1);
+/*!40000 ALTER TABLE `encargoflor` ENABLE KEYS */;
+
+-- Volcando estructura para tabla flores.encargos
+CREATE TABLE IF NOT EXISTS `encargos` (
+  `idEncargo` int(11) NOT NULL AUTO_INCREMENT,
+  `idCliente` int(11) DEFAULT 0,
+  `NombreComposicion` varchar(150) NOT NULL DEFAULT '0',
+  `FechaAlta` datetime NOT NULL DEFAULT current_timestamp(),
+  `FechaEntrega` datetime NOT NULL,
+  `Estado` varchar(50) DEFAULT '',
+  PRIMARY KEY (`idEncargo`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+
+-- Volcando datos para la tabla flores.encargos: ~4 rows (aproximadamente)
+/*!40000 ALTER TABLE `encargos` DISABLE KEYS */;
+INSERT INTO `encargos` (`idEncargo`, `idCliente`, `NombreComposicion`, `FechaAlta`, `FechaEntrega`, `Estado`) VALUES
+	(3, 0, 'Prueba 14', '2022-07-12 09:22:08', '2022-07-18 00:00:00', 'Pendiente'),
+	(4, 1, 'Prueba5', '2022-07-12 09:25:11', '2022-07-18 00:00:00', 'Pendiente'),
+	(5, 1, 'Cosas', '2022-07-12 09:26:51', '2022-07-19 00:00:00', 'Hecho'),
+	(6, 0, 'Nuevo encargo', '2022-07-12 14:24:37', '2022-07-14 00:00:00', 'Pendiente'),
+	(7, 0, 'Fantasía ilusión', '2022-07-12 14:59:45', '2022-07-31 00:00:00', 'Pendiente'),
+	(8, 2, 'Recuerdos coloridos', '2022-07-12 15:05:05', '2022-07-31 00:00:00', 'Pendiente');
+/*!40000 ALTER TABLE `encargos` ENABLE KEYS */;
+
+-- Volcando estructura para tabla flores.estadosencargos
+CREATE TABLE IF NOT EXISTS `estadosencargos` (
+  `Nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Volcando datos para la tabla flores.estadosencargos: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `estadosencargos` DISABLE KEYS */;
+INSERT INTO `estadosencargos` (`Nombre`) VALUES
+	('Pendiente'),
+	('En proceso'),
+	('Entregado');
+/*!40000 ALTER TABLE `estadosencargos` ENABLE KEYS */;
 
 -- Volcando estructura para tabla flores.familias
 CREATE TABLE IF NOT EXISTS `familias` (
@@ -107,9 +170,26 @@ INSERT INTO `florescomposicion` (`idComposicion`, `idFlor`, `Cantidad`) VALUES
 	(1, 1, 6),
 	(1, 2, 3),
 	(2, 1, 1),
-	(2, 2, 6),
-	(2, 3, 3);
+	(2, 3, 3),
+	(2, 4, 6);
 /*!40000 ALTER TABLE `florescomposicion` ENABLE KEYS */;
+
+-- Volcando estructura para tabla flores.usuarios
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `userId` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(50) NOT NULL,
+  `password` varchar(65) NOT NULL,
+  `Nombre` varchar(50) NOT NULL,
+  `Apellidos` varchar(50) NOT NULL,
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `user` (`user`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+
+-- Volcando datos para la tabla flores.usuarios: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` (`userId`, `user`, `password`, `Nombre`, `Apellidos`) VALUES
+	(1, 'sergio', '70b09981842b8fc9371b143903eb3e90a7a2a48c8c2ecd8c3c6fdc09c3e48e45', 'Sergio', 'Sanchez Alvarez');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
