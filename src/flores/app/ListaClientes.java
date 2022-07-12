@@ -6,7 +6,10 @@ package flores.app;
 
 import flores.Beans.ClienteBean;
 import flores.gestores.GestionClientesBD;
+import java.awt.Window;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -16,12 +19,18 @@ import javax.swing.table.DefaultTableModel;
  * @author vPalomo
  */
 public class ListaClientes extends javax.swing.JPanel {
-
+    
+    private String idClienteSel;
+    private String opcion;
+    public static final String ASIGNAR="asig";
+    public static final String CANCELAR="cancel";
+    
     /**
      * Creates new form ListaClientes
      */
     public ListaClientes() {
         initComponents();
+        opcion=ListaClientes.CANCELAR;
         cargarTablaClientes("");
         jTableClientes.getModel().addTableModelListener(new TableModelListener() {
             @Override
@@ -90,6 +99,11 @@ public class ListaClientes extends javax.swing.JPanel {
         });
 
         jButton2.setText("Asignar cliente");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Salir");
 
@@ -137,6 +151,34 @@ public class ListaClientes extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         cargarTablaClientes(jTextField1.getText());        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(jTableClientes.getSelectedRow()==-1){
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente");
+            return;
+        }
+        this.opcion=ListaClientes.ASIGNAR;
+        this.idClienteSel=(String) jTableClientes.getValueAt(jTableClientes.getSelectedRow(),0);
+        Window w = SwingUtilities.getWindowAncestor(this);
+        w.setVisible(false);
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    public String getIdClienteSel() {
+        return idClienteSel;
+    }
+
+    public void setIdClienteSel(String idClienteSel) {
+        this.idClienteSel = idClienteSel;
+    }
+
+    public String getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(String opcion) {
+        this.opcion = opcion;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

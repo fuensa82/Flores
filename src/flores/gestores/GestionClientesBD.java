@@ -23,7 +23,7 @@ public class GestionClientesBD {
         try {
             conexion = ConectorBD.getConnection();
             PreparedStatement consulta = conexion.prepareStatement(
-                    "SELECT Id,Nombre,Apellidos,Telefono,email,`Telefono 2`,`Direccion entrega` FROM clientes");
+                    "SELECT IdCliente,Nombre,Apellidos,Telefono,email,`Telefono 2`,`Direccion entrega` FROM clientes");
             System.out.println(consulta);
             ResultSet resultado = consulta.executeQuery();
             ArrayList<ClienteBean> lista = new ArrayList();

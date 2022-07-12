@@ -484,12 +484,30 @@ public class FloresMain extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JDialog frame = new JDialog(this, "Encargos - Elegir cliente", true);
         frame.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-        frame.getContentPane().add(new ListaClientes());
+        ListaClientes ventana=new ListaClientes();
+        frame.getContentPane().add(ventana);
         frame.pack();
         frame.setLocationRelativeTo(this);
         frame.setVisible(true);
-        //iniciarMisComponentes();
+        String idClienteSel=ventana.getIdClienteSel();
+//iniciarMisComponentes();
         frame.setVisible(false);
+        if(ventana.getOpcion().equals(ListaClientes.ASIGNAR)){
+            JDialog frameFecha = new JDialog(this, "fecha", true);
+            frameFecha.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+            FechaEntrega ventanaF=new FechaEntrega();
+            frameFecha.getContentPane().add(ventanaF);
+            frameFecha.pack();
+            frameFecha.setLocationRelativeTo(this);
+            frameFecha.setVisible(true);
+            //iniciarMisComponentes();
+            frameFecha.setVisible(false);
+            System.out.println("Fecha: "+ventanaF.getFechaSelString());
+            if(ventanaF.getOpcion().equals(FechaEntrega.ACEPTAR)){
+                guardarEncargo(jTextFieldNombreComposición.getText(),ventanaF.getFechaSelString(), idClienteSel);
+            }
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPanel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentShown
@@ -628,6 +646,7 @@ public class FloresMain extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     System.out.println("Se ha hecho doble click - cargamos las flores del ramo");
+                    jTextFieldNombreComposición.setText((String) jTableComposiones.getValueAt(jTableComposiones.getSelectedRow(),1));
                     String idCompo = (String) jTableComposiones.getValueAt(jTableComposiones.getSelectedRow(), 0);
                     ArrayList<FlorBean> lista = GestionComposicionesBD.getListaFloresCompo(idCompo);
                     DefaultTableModel datosTabla = (DefaultTableModel) jTableComposicionNueva.getModel();
@@ -706,7 +725,10 @@ public class FloresMain extends javax.swing.JFrame {
     }
 
     private void guardarEncargo(String nombre, String fechaEntrega) {
-        int idEncargo=GestionEncargosBD.setEncargoNuevo(nombre, FechasUtils.fechaParaMysql(fechaEntrega));
+        guardarEncargo(nombre, fechaEntrega, "0");
+    }
+    private void guardarEncargo(String nombre, String fechaEntrega, String idCliente) {
+        int idEncargo=GestionEncargosBD.setEncargoNuevo(nombre, FechasUtils.fechaParaMysql(fechaEntrega), idCliente);
         for (int i=0;i<jTableComposicionNueva.getRowCount();i++){
             String idFlor= (String) jTableComposicionNueva.getValueAt(i, 0);
             int cantidad= (int) jTableComposicionNueva.getValueAt(i, 4);

@@ -25,14 +25,18 @@ import javax.swing.DefaultComboBoxModel;
 public class GestionEncargosBD {
 
     public static int setEncargoNuevo(String nombre, String fechaEntrega) {
+        return setEncargoNuevo(nombre, fechaEntrega, "0");
+    }
+    public static int setEncargoNuevo(String nombre, String fechaEntrega, String idCliente) {
         Connection conexion = null;
         try {
             conexion = ConectorBD.getConnection();
             // INSERT INTO `hospitalidad`.`autobuses` (`Descripcion`, `PlazasNoEnfermos`, `PlazasEnfermos`, `Observaciones`, `idViaje`) VALUES ('Nº 2', '10', '9', 'Ninguna', '1');
 
-            PreparedStatement insert1 = conexion.prepareStatement("INSERT INTO `flores`.`encargos` (`NombreComposicion`, `FechaEntrega`, `Estado`) VALUES (?, ?, 'Pendiente');");
+            PreparedStatement insert1 = conexion.prepareStatement("INSERT INTO `flores`.`encargos` (`NombreComposicion`, `FechaEntrega`, `Estado`, idCliente) VALUES (?, ?, 'Pendiente', ?);");
             insert1.setString(1, nombre);
             insert1.setString(2, fechaEntrega);
+            insert1.setString(3, idCliente);
             System.out.println(insert1);
             int fila = insert1.executeUpdate();
             if (fila == 1) {
