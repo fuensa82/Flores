@@ -5,8 +5,10 @@
 package flores.app;
 
 import flores.Beans.ComposicionBean;
+import flores.Beans.EncargoBean;
 import flores.Beans.FlorBean;
 import flores.gestores.GestionComposicionesBD;
+import flores.gestores.GestionEncargosBD;
 import flores.gestores.GestionFloresBD;
 import flores.utils.FechasUtils;
 import flores.utils.Utils;
@@ -72,6 +74,14 @@ public class FloresMain extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTableEncargos = new javax.swing.JTable();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jLabelTotalEncargos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1024, 768));
@@ -350,6 +360,100 @@ public class FloresMain extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Ramos", jPanel2);
 
+        jPanel3.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanel3ComponentShown(evt);
+            }
+        });
+
+        jTableEncargos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "id", "Nombre comp", "Cliente", "Fecha de entrega"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(jTableEncargos);
+        if (jTableEncargos.getColumnModel().getColumnCount() > 0) {
+            jTableEncargos.getColumnModel().getColumn(0).setMinWidth(20);
+            jTableEncargos.getColumnModel().getColumn(0).setPreferredWidth(20);
+            jTableEncargos.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane7.setViewportView(jTable2);
+
+        jComboBox1.setModel(GestionEncargosBD.getModeloComboEstados());
+
+        jLabel5.setText("Estado del encargo:");
+
+        jLabelTotalEncargos.setText("Total: ");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(112, 112, 112))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabelTotalEncargos)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelTotalEncargos)
+                .addContainerGap(81, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Encargos", jPanel3);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -406,8 +510,17 @@ public class FloresMain extends javax.swing.JFrame {
         //iniciarMisComponentes();
         frame.setVisible(false);
         System.out.println("Fecha: "+ventanaF.getFechaSelString());
-        
+        if(ventanaF.getOpcion().equals(FechaEntrega.ACEPTAR)){
+            guardarEncargo(jTextFieldNombreComposición.getText(),ventanaF.getFechaSelString());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jPanel3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel3ComponentShown
+        cargarListaEncargos();
+        
+        
+        
+    }//GEN-LAST:event_jPanel3ComponentShown
 
     /**
      * @param args the command line arguments
@@ -449,20 +562,28 @@ public class FloresMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabelTotalEncargos;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTableComposicionNueva;
     private javax.swing.JTable jTableComposiones;
+    private javax.swing.JTable jTableEncargos;
     private javax.swing.JTable jTableFamilias;
     private javax.swing.JTable jTableFlorAlmacen;
     private javax.swing.JTable jTableFlores;
@@ -582,5 +703,35 @@ public class FloresMain extends javax.swing.JFrame {
                 }
             }
         });
+    }
+
+    private void guardarEncargo(String nombre, String fechaEntrega) {
+        int idEncargo=GestionEncargosBD.setEncargoNuevo(nombre, FechasUtils.fechaParaMysql(fechaEntrega));
+        for (int i=0;i<jTableComposicionNueva.getRowCount();i++){
+            String idFlor= (String) jTableComposicionNueva.getValueAt(i, 0);
+            int cantidad= (int) jTableComposicionNueva.getValueAt(i, 4);
+            System.out.println(idEncargo+" - "+idFlor+" - "+cantidad);
+            GestionEncargosBD.setEncargoNuevoFlores(idEncargo, Integer.parseInt(idFlor), cantidad);
+            
+        }
+    }
+
+    private void cargarListaEncargos() {
+        ArrayList<EncargoBean> lista;
+        String estado = jComboBox1.getModel().getElementAt(jComboBox1.getSelectedIndex());
+        lista=GestionEncargosBD.getListaEncargos(estado);
+        DefaultTableModel datosTabla = (DefaultTableModel) jTableEncargos.getModel();
+        for (int i = datosTabla.getRowCount(); i > 0; i--) {
+            datosTabla.removeRow(i - 1);
+        }
+        for (EncargoBean encargo : lista) {
+            datosTabla.addRow(new Object[]{
+                encargo.getIdEncargo(),
+                encargo.getNombreComposicion(),
+                encargo.getNombreCliente(),
+                FechasUtils.fecha(encargo.getFechaEntrega())
+            });
+        }
+        jLabelTotalEncargos.setText("Total: " + lista.size());
     }
 }

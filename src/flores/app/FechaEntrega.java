@@ -18,12 +18,15 @@ public class FechaEntrega extends javax.swing.JPanel {
     private GregorianCalendar fechaSel=new GregorianCalendar();
     private String fechaSelString;
     private JCalendar calendar;
+    private String opcion;
+    public static final String ACEPTAR="aceptar";
+    public static final String CANCELAR="cancelar";
     /**
      * Creates new form FechaEntrega
      */
     public FechaEntrega() {
         initComponents();
-        
+        opcion=FechaEntrega.CANCELAR;
  
         // Instanciar Componente
         calendar = new JCalendar();
@@ -86,9 +89,19 @@ public class FechaEntrega extends javax.swing.JPanel {
         //GregorianCalendar cal = new GregorianCalendar();
         fechaSel.setTime(calendar.getDate());
         fechaSelString=FechasUtils.getFechaString(fechaSel);
+        opcion=FechaEntrega.ACEPTAR;
         Window w = SwingUtilities.getWindowAncestor(this);
         w.setVisible(false);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public String getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(String opcion) {
+        this.opcion = opcion;
+    }
 
     public GregorianCalendar getFechaSel() {
         return fechaSel;
