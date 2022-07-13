@@ -65,7 +65,7 @@ public class FloresMain extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTableComposiones = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTableFloresDisponibles = new javax.swing.JTable();
+        jTableFloresDisponiblesCompo = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTableComposicionNueva = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -187,23 +187,23 @@ public class FloresMain extends javax.swing.JFrame {
             jTableComposiones.getColumnModel().getColumn(0).setMaxWidth(20);
         }
 
-        jTableFloresDisponibles.setAutoCreateRowSorter(true);
-        jTableFloresDisponibles.setModel(new javax.swing.table.DefaultTableModel(
+        jTableFloresDisponiblesCompo.setAutoCreateRowSorter(true);
+        jTableFloresDisponiblesCompo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Familia", "Nombre", "Color", "Almacen"
+                "Id", "Familia", "Nombre", "Color", "Almacen", "Disponible"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -214,9 +214,9 @@ public class FloresMain extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTableFloresDisponibles);
-        if (jTableFloresDisponibles.getColumnModel().getColumnCount() > 0) {
-            jTableFloresDisponibles.getColumnModel().getColumn(0).setPreferredWidth(25);
+        jScrollPane3.setViewportView(jTableFloresDisponiblesCompo);
+        if (jTableFloresDisponiblesCompo.getColumnModel().getColumnCount() > 0) {
+            jTableFloresDisponiblesCompo.getColumnModel().getColumn(0).setPreferredWidth(25);
         }
 
         jTableComposicionNueva.setAutoCreateRowSorter(true);
@@ -465,7 +465,7 @@ public class FloresMain extends javax.swing.JFrame {
     private void jPanel2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel2ComponentShown
         //Pestaña ramos
         cargarTablaComposiciones();
-        cargarTablaAlmacen();
+        cargarTablaFloresDisponiblesCompo();
         
     }//GEN-LAST:event_jPanel2ComponentShown
 
@@ -590,7 +590,7 @@ public class FloresMain extends javax.swing.JFrame {
     private javax.swing.JTable jTableComposiones;
     private javax.swing.JTable jTableEncargos;
     private javax.swing.JTable jTableFloresAlmacen;
-    private javax.swing.JTable jTableFloresDisponibles;
+    private javax.swing.JTable jTableFloresDisponiblesCompo;
     private javax.swing.JTable jTableFloresEncargo;
     private javax.swing.JTextField jTextFieldNombreComposición;
     // End of variables declaration//GEN-END:variables
@@ -611,9 +611,10 @@ public class FloresMain extends javax.swing.JFrame {
         }
     }
     
-    private void cargarTablaAlmacen() {
-        ArrayList<FlorBean> lista = GestionFloresBD.getListaFloresAlmacen();
-        DefaultTableModel datosTabla = (DefaultTableModel) jTableFloresDisponibles.getModel();
+    private void cargarTablaFloresDisponiblesCompo() {
+        //ArrayList<FlorBean> lista = GestionFloresBD.getListaFloresAlmacen();
+        ArrayList<FlorBean> lista = GestionFloresBD.getListaFloresGeneral();
+        DefaultTableModel datosTabla = (DefaultTableModel) jTableFloresDisponiblesCompo.getModel();
         for (int i = datosTabla.getRowCount(); i > 0; i--) {
             datosTabla.removeRow(i - 1);
         }
@@ -623,7 +624,8 @@ public class FloresMain extends javax.swing.JFrame {
                 flor.getNombreFamilia(),
                 flor.getNombre(),
                 flor.getColor(),
-                flor.getCantidadAlmacen()
+                flor.getCantidadAlmacen(),
+                (flor.getCantidadAlmacen()-flor.getCantidad())
             });
         }
     }
@@ -703,12 +705,16 @@ public class FloresMain extends javax.swing.JFrame {
     }
 
     private void ponerListenerTablaFlorAlmacen() {
-        jTableFloresDisponibles.addMouseListener(new MouseAdapter() {
+        jTableFloresDisponiblesCompo.addMouseListener(new MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     
-                    String idFlor = (String) jTableFloresDisponibles.getValueAt(jTableFloresDisponibles.getSelectedRow(), 0);
+                    String idFlor = (String) jTableFloresDisponiblesCompo.getValueAt(jTableFloresDisponiblesCompo.getSelectedRow(), 0);
                     System.out.println("Se ha hecho doble click - añadimos una flor: "+idFlor);
+                    //restamos una flor en la tabla
+                    int cantidadD = (int) jTableFloresDisponiblesCompo.getValueAt(jTableFloresDisponiblesCompo.getSelectedRow(), 5);
+                    jTableFloresDisponiblesCompo.setValueAt(--cantidadD, jTableFloresDisponiblesCompo.getSelectedRow(), 5);
+                    
                     boolean existe=false;
                     for (int i=0;i< jTableComposicionNueva.getRowCount();i++){
                         String idTabla=(String) jTableComposicionNueva.getValueAt(i, 0);
@@ -722,9 +728,9 @@ public class FloresMain extends javax.swing.JFrame {
                     }
                     if(!existe){
                         System.out.println("Añadiendo flor");    
-                        String nFamilia = (String) jTableFloresDisponibles.getValueAt(jTableFloresDisponibles.getSelectedRow(), 1);
-                        String nombre = (String) jTableFloresDisponibles.getValueAt(jTableFloresDisponibles.getSelectedRow(), 2);
-                        String color = (String) jTableFloresDisponibles.getValueAt(jTableFloresDisponibles.getSelectedRow(), 3);
+                        String nFamilia = (String) jTableFloresDisponiblesCompo.getValueAt(jTableFloresDisponiblesCompo.getSelectedRow(), 1);
+                        String nombre = (String) jTableFloresDisponiblesCompo.getValueAt(jTableFloresDisponiblesCompo.getSelectedRow(), 2);
+                        String color = (String) jTableFloresDisponiblesCompo.getValueAt(jTableFloresDisponiblesCompo.getSelectedRow(), 3);
                         ((DefaultTableModel)jTableComposicionNueva.getModel()).addRow(new Object[]{
                             idFlor,
                             nFamilia,
