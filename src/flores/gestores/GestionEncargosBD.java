@@ -66,7 +66,7 @@ public class GestionEncargosBD {
         Connection conexion = null;
         try {
             conexion = ConectorBD.getConnection();
-            PreparedStatement insert1 = conexion.prepareStatement("INSERT INTO `flores`.`encargoflor` (`idEncargo`, `idFlor`, `Cantidad`) VALUES (?, ?, ?);");
+            PreparedStatement insert1 = conexion.prepareStatement("INSERT INTO `flores`.`floresencargo` (`idEncargo`, `idFlor`, `Cantidad`) VALUES (?, ?, ?);");
             insert1.setInt(1, idEncargo);
             insert1.setInt(2, idFlor);
             insert1.setInt(3, cantidad);
@@ -163,16 +163,23 @@ public class GestionEncargosBD {
         return null;
     }
     
-    public static ArrayList<FlorBean> getListaFloresCompo(String idCompo){
+    
+    
+    /**
+     * Devuelve la lista de flores que lleva un encargo en cuestion
+     * @param idEncargo
+     * @return 
+     */
+    public static ArrayList<FlorBean> getListaFloresEncargo(String idEncargo){
         Connection conexion = null;
         try {
             conexion = ConectorBD.getConnection();
             PreparedStatement consulta = conexion.prepareStatement(
-                    "SELECT flores.idFlor, familias.Nombre AS nombreFam, flores.Nombre, Color, florescomposicion.Cantidad " +
-                    "FROM flores, florescomposicion, familias " +
+                    "SELECT flores.idFlor, familias.Nombre AS nombreFam, flores.Nombre, Color, floresencargo.Cantidad " +
+                    "FROM flores, floresencargo, familias " +
                     "WHERE flores.idFamilia=familias.idFamilia AND " +
-                    "	flores.idFlor=florescomposicion.idFlor AND florescomposicion.idComposicion=?");
-            consulta.setString(1, idCompo);
+                    "	flores.idFlor=floresencargo.idFlor AND floresencargo.idEncargo=?");
+            consulta.setString(1, idEncargo);
             System.out.println(consulta);
             ResultSet resultado = consulta.executeQuery();
             ArrayList<FlorBean> lista = new ArrayList();
@@ -183,7 +190,7 @@ public class GestionEncargosBD {
                 flor.setIdFamilia(resultado.getString(2));
                 flor.setNombre(resultado.getString(3));
                 flor.setColor(resultado.getString(4));
-                flor.setCantMinima(resultado.getInt(5));
+                flor.setCantidad(resultado.getInt(5));
                 lista.add(flor);
             }
             return lista;
@@ -200,4 +207,5 @@ public class GestionEncargosBD {
         }
         return null;
     }
+    
 }

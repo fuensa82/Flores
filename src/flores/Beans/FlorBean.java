@@ -9,16 +9,26 @@ package flores.Beans;
  * @author vPalomo
  */
 public class FlorBean {
+
     private String idFlor;
     private String idFamilia;
     private String nombreFamilia;
     private String nombre;
     private int duracion;
     private String color;
+    private int cantidad; // Se utilizará para saber la cantidad en una composicion o encargo
     private int cantMinima;
     private int cantidadAlmacen;
-    
-     public String getNombreFamilia() {
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public String getNombreFamilia() {
         return nombreFamilia;
     }
 
