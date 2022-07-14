@@ -11,9 +11,11 @@ import flores.gestores.GestionComposicionesBD;
 import flores.gestores.GestionEncargosBD;
 import flores.gestores.GestionFloresBD;
 import flores.utils.FechasUtils;
-import flores.utils.Utils;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -83,6 +85,8 @@ public class FloresMain extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabelTotalEncargos = new javax.swing.JLabel();
+        jPanelBotonesEstados = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1024, 768));
@@ -99,14 +103,14 @@ public class FloresMain extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IdFlor", "Familia", "Nombre", "Color", "Cant. Almacen", "Cant. Disponible"
+                "IdFlor", "Familia", "Nombre", "Color", "Cant. Almacen", "Cant. Encargos", "Cant. Disponible"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -125,6 +129,8 @@ public class FloresMain extends javax.swing.JFrame {
             jTableFloresAlmacen.getColumnModel().getColumn(4).setPreferredWidth(40);
             jTableFloresAlmacen.getColumnModel().getColumn(5).setResizable(false);
             jTableFloresAlmacen.getColumnModel().getColumn(5).setPreferredWidth(40);
+            jTableFloresAlmacen.getColumnModel().getColumn(6).setResizable(false);
+            jTableFloresAlmacen.getColumnModel().getColumn(6).setPreferredWidth(40);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -133,8 +139,8 @@ public class FloresMain extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(454, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(217, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,10 +404,25 @@ public class FloresMain extends javax.swing.JFrame {
         }
 
         jComboBox1.setModel(GestionEncargosBD.getModeloComboEstados());
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Estado del encargo:");
 
         jLabelTotalEncargos.setText("Total: ");
+
+        jPanelBotonesEstados.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelBotonesEstados.setLayout(new java.awt.GridLayout());
+
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -410,19 +431,19 @@ public class FloresMain extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(40, 40, 40)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(95, 95, 95))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabelTotalEncargos)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addGap(40, 40, 40)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelTotalEncargos)
+                    .addComponent(jPanelBotonesEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(95, 95, 95))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -437,7 +458,11 @@ public class FloresMain extends javax.swing.JFrame {
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelTotalEncargos)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelBotonesEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Encargos", jPanel3);
@@ -456,7 +481,7 @@ public class FloresMain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(69, 69, 69)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pack();
@@ -524,10 +549,22 @@ public class FloresMain extends javax.swing.JFrame {
 
     private void jPanel3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel3ComponentShown
         cargarListaEncargos();
-        vaciarTable(jTableFloresEncargo);
+        botonesEstados();
+        //vaciarTable(jTableFloresEncargo);
         
         
     }//GEN-LAST:event_jPanel3ComponentShown
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        //Cambiar opciones del combo de estado.
+        cargarListaEncargos();
+        cambiarBotonEstados();
+        //vaciarTable(jTableFloresEncargo);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -569,6 +606,7 @@ public class FloresMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -579,6 +617,7 @@ public class FloresMain extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanelBotonesEstados;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -634,10 +673,12 @@ public class FloresMain extends javax.swing.JFrame {
         jTableComposiones.addMouseListener(new MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
+                    cargarTablaFloresDisponiblesCompo();
                     System.out.println("Se ha hecho doble click - cargamos las flores del ramo");
                     jTextFieldNombreComposición.setText((String) jTableComposiones.getValueAt(jTableComposiones.getSelectedRow(),1));
                     String idCompo = (String) jTableComposiones.getValueAt(jTableComposiones.getSelectedRow(), 0);
                     ArrayList<FlorBean> lista = GestionComposicionesBD.getListaFloresCompo(idCompo);
+                    descontarFloresTablaFloresDisponibles(lista);
                     DefaultTableModel datosTabla = (DefaultTableModel) jTableComposicionNueva.getModel();
                     for (int i = datosTabla.getRowCount(); i > 0; i--) {
                         datosTabla.removeRow(i - 1);
@@ -648,12 +689,28 @@ public class FloresMain extends javax.swing.JFrame {
                             flor.getIdFamilia(),
                             flor.getNombre(),
                             flor.getColor(),
-                            flor.getCantMinima()
+                            flor.getCantidad()
                         });
                     }
                 }
             }
         });
+    }
+    private void descontarFloresTablaFloresDisponibles(ArrayList<FlorBean> lista){
+        System.out.println("Descontar flores");
+        for(FlorBean flor: lista){
+            for (int j = jTableFloresDisponiblesCompo.getRowCount()-1; j >= 0; j--) {
+                String idFlor = (String) jTableFloresDisponiblesCompo.getValueAt(j, 0);
+                if(idFlor.equals(flor.getIdFlor())){
+                    System.out.println("cant original: "+jTableFloresDisponiblesCompo.getValueAt(j, 5));
+                    System.out.println("cant compo: "+flor.getCantidad());
+                    
+                    int cant=(int) jTableFloresDisponiblesCompo.getValueAt(j, 5);
+                    System.out.println("cant resta: "+(cant-flor.getCantidad()));
+                    jTableFloresDisponiblesCompo.setValueAt((cant-flor.getCantidad()), j, 5 );
+                }
+            }
+        }
     }
     
     private void ponerListenerTablaEncargos() {
@@ -760,6 +817,7 @@ public class FloresMain extends javax.swing.JFrame {
     }
 
     private void cargarListaEncargos() {
+        vaciarTable(jTableFloresEncargo);
         ArrayList<EncargoBean> lista;
         String estado = jComboBox1.getModel().getElementAt(jComboBox1.getSelectedIndex());
         lista=GestionEncargosBD.getListaEncargos(estado);
@@ -775,7 +833,7 @@ public class FloresMain extends javax.swing.JFrame {
                 FechasUtils.fecha(encargo.getFechaEntrega())
             });
         }
-        jLabelTotalEncargos.setText("Total: " + lista.size());
+        jLabelTotalEncargos.setText("Total encargos: " + lista.size());
     }
 
     private void cargarTablaFloresAlmacen() {
@@ -793,6 +851,7 @@ public class FloresMain extends javax.swing.JFrame {
                 flor.getNombre(),
                 flor.getColor(),
                 flor.getCantidadAlmacen(),
+                flor.getCantidad(),
                 (flor.getCantidadAlmacen()-flor.getCantidad())
             });
         }
@@ -805,5 +864,55 @@ public class FloresMain extends javax.swing.JFrame {
             datosTabla.removeRow(i - 1);
         }
         
+    }
+
+    private void botonesEstados() {
+        String combo=jComboBox1.getItemAt(jComboBox1.getSelectedIndex());
+        if(listaBotonesEstado.size()==0){
+            ArrayList<String> listaEstados=GestionEncargosBD.getListaEstados();
+            System.out.println("Botones de estado");
+            JButton boton;
+            for(String nombreBoton: listaEstados){
+                boton=new JButton(nombreBoton);
+                boton.setPreferredSize(new Dimension(90, 80));
+                if(nombreBoton.equalsIgnoreCase(combo)){
+                    boton.setEnabled(false);
+                }
+                boton.addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        cambiarEstado(nombreBoton);
+                    }
+                    
+                });
+                //Añadimos el boton al panel y al arrayList para luego manejarlos.
+                jPanelBotonesEstados.add(boton);
+                listaBotonesEstado.add(boton);
+            }
+        }
+    }
+    private void cambiarEstado(String nuevoEstado){
+        if(jTableEncargos.getSelectedRow()<0){
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un encargo","Error",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        System.out.println("Cambiar estado: "+nuevoEstado);
+        String id=(String) jTableEncargos.getValueAt(jTableEncargos.getSelectedRow(), 0);
+        GestionEncargosBD.cambiarEstado(nuevoEstado, id);
+        cargarListaEncargos();
+        
+    }
+    private ArrayList<JButton> listaBotonesEstado=new ArrayList<JButton>();
+
+    private void cambiarBotonEstados() {
+        String estadoNuevo = jComboBox1.getModel().getElementAt(jComboBox1.getSelectedIndex());
+        for(JButton boton:listaBotonesEstado){
+            boton.setEnabled(!estadoNuevo.equalsIgnoreCase(boton.getText()));
+//            if(estadoNuevo.equalsIgnoreCase(boton.getText())){
+//                boton.setEnabled(false);
+//            }else{
+//                
+//            }
+        }
     }
 }

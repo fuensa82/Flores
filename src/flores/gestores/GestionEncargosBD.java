@@ -85,6 +85,30 @@ public class GestionEncargosBD {
         }
         return 0; //Error
     }
+    
+    public static int cambiarEstado(String estadoNuevo, String idEncargo) {
+        Connection conexion = null;
+        try {
+            conexion = ConectorBD.getConnection();
+            PreparedStatement insert1 = conexion.prepareStatement("UPDATE `flores`.`encargos` SET `Estado`=? WHERE  `idEncargo`=?");
+            insert1.setString(2, idEncargo);
+            insert1.setString(1, estadoNuevo);
+            System.out.println(insert1);
+            int fila = insert1.executeUpdate();
+            return fila; //Error
+
+        } catch (SQLException | NamingException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conexion.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(GestionComposicionesBD.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return 0; //Error
+    }
+    
     public static DefaultComboBoxModel getModeloComboEstados() {
         ArrayList<String> lista = getListaEstados();
         String[] modelo = new String[lista.size()];
@@ -95,12 +119,12 @@ public class GestionEncargosBD {
 
     }
 
-    private static ArrayList<String> getListaEstados() {
+    public static ArrayList<String> getListaEstados() {
         ArrayList<String> listaEstados=new ArrayList<>();
         Connection conexion = null;
         try {
             conexion = ConectorBD.getConnection();
-            PreparedStatement consulta = conexion.prepareStatement("select nombre FROM estadosencargos");
+            PreparedStatement consulta = conexion.prepareStatement("select nombre FROM estadosencargos order by orden");
 
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {

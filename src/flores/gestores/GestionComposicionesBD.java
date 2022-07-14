@@ -73,7 +73,7 @@ public class GestionComposicionesBD {
                 flor.setIdFamilia(resultado.getString(2));
                 flor.setNombre(resultado.getString(3));
                 flor.setColor(resultado.getString(4));
-                flor.setCantMinima(resultado.getInt(5));
+                flor.setCantidad(resultado.getInt(5));
                 lista.add(flor);
             }
             return lista;
